@@ -24,9 +24,7 @@ $(function () {
   function getTimeComparisonClass(idHour) {
     
     const nowHour = now.hour(); 
-    // now.hour(idHour) creates new dayjs object
-    // we need to call hour() method on it to receive a number
-    const divHour = now.hour(idHour).hour();
+    const divHour = idHour;
 
     let className = '';
     if (nowHour == divHour) {
@@ -36,6 +34,7 @@ $(function () {
     } else {
       className = 'future';
     }
+
     return className;
   }
 
