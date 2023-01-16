@@ -6,17 +6,24 @@ $(function () {
   // Get current date/time
   const now = dayjs();
 
-  // TODO: Add a listener for click events on the save button. This code should
-  // use the id in the containing time-block as a key to save the user input in
-  // local storage. HINT: What does `this` reference in the click listener
-  // function? How can DOM traversal be used to get the "hour-x" id of the
-  // time-block containing the button that was clicked? How might the id be
-  // useful when saving the description in local storage?
+  // Save textarea value in localStorage on save button click.
   $('.saveBtn').click(function (event) {
+
     const parentDiv = $( this ).parent();
+    const idKey = parentDiv.attr('id');
     const textArea = parentDiv.find('textarea');
-    localStorage.setItem(parentDiv.attr('id'), textArea.val().trim());
-  })
+    const textAreaContent = textArea.val().trim();
+
+    if (textAreaContent) {
+      localStorage.setItem(
+        idKey,
+        JSON.stringify(textAreaContent)
+      );
+    // If user saves empty string, delete item from localStorage.
+    } else {
+      localStorage.removeItem(idKey);
+    }
+  });
 
   // Apply the past, present, or future class to each time
   // block by comparing the id to the current hour.   
@@ -40,14 +47,26 @@ $(function () {
     return className;
   }
 
-  // Add 'past', 'present', or 'future' classname to each div.time-block
+  // 1. Add 'past', 'present', or 'future' classname to each div.time-block
+  // 2. Get content for each child textarea from localStorage if it exists
   $('.time-block').each(function (i) {
     // Get the hour-<num> id of each .time-block div
     const elemId = $( this ).attr('id');
+    // textarea child of div.time-block
+    const textArea = $( this ).find('textarea');
     // Extract the hour from the id string
     const idHour = parseInt(elemId.split("-")[1], 10);
-
+    // Add 'past', 'present', or 'future' class depeding on current time
     $( this ).addClass(getTimeComparisonClass(idHour));
+
+    // Get saved user content from localStorage
+    const storedContent = localStorage.getItem(elemId);
+    if (storedContent) {
+      textArea.val(JSON.parse(storedContent));
+    } else {
+      textArea.val('');
+    } 
+
   });
 
   // TODO: Add code to get any user input that was saved in localStorage and set
