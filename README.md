@@ -16,7 +16,7 @@ Enter the day's plans for each hour in the corresponding time block.  Click the 
 
 ## Roadmap
  - Allow user to choose time range for displayed time blocks.
- - Offer dropdown select where user's can label and store entire days for easy reload.
+ - Offer dropdown select where users can label and store entire days for easy reload.
  - Add delete button on each time block to easily clear text.
 
 
